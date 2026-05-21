@@ -12,8 +12,9 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 16px;
+    padding-top: 40px;
   }
   .container {
     width: 100%;
@@ -22,275 +23,224 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 24px;
-    padding: 32px 24px;
+    padding: 28px 20px;
     border: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 25px 60px rgba(0,0,0,0.5);
   }
-  h1 {
-    text-align: center;
-    font-size: 24px;
-    color: #fff;
-    margin-bottom: 4px;
-    letter-spacing: 1px;
-  }
-  .subtitle {
-    text-align: center;
-    color: rgba(255,255,255,0.5);
-    font-size: 13px;
-    margin-bottom: 28px;
-  }
-  .status-bar {
+  h1 { text-align: center; font-size: 22px; color: #fff; margin-bottom: 2px; letter-spacing: 1px; }
+  .subtitle { text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; margin-bottom: 20px; }
+
+  /* 模式切换 */
+  .mode-tabs {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 16px;
     background: rgba(255,255,255,0.05);
     border-radius: 12px;
-    padding: 12px 18px;
-    margin-bottom: 20px;
+    padding: 4px;
   }
-  .status-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .mode-tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
+  .mode-tab.active {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-weight: 500;
+  }
+  .mode-tab:active { transform: scale(0.96); }
+
+  /* 语音模式 */
+  .voice-section, .text-section { display: none; }
+  .voice-section.active, .text-section.active { display: block; }
+
+  .status-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.05); border-radius: 12px;
+    padding: 10px 16px; margin-bottom: 16px;
+  }
+  .status-left { display: flex; align-items: center; gap: 8px; }
   .status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #555;
-    transition: all 0.3s;
-    flex-shrink: 0;
+    width: 8px; height: 8px; border-radius: 50%; background: #555;
+    transition: all 0.3s; flex-shrink: 0;
   }
-  .status-dot.active {
-    background: #00e676;
-    box-shadow: 0 0 12px #00e67666;
-    animation: pulse 1.5s infinite;
-  }
-  .status-dot.listening {
-    background: #ff9100;
-    box-shadow: 0 0 12px #ff910066;
-    animation: pulse 0.8s infinite;
-  }
-  .status-dot.translating {
-    background: #448aff;
-    box-shadow: 0 0 12px #448aff66;
-    animation: pulse 0.5s infinite;
-  }
+  .status-dot.listening { background: #ff9100; box-shadow: 0 0 10px #ff910066; animation: pulse 0.8s infinite; }
+  .status-dot.translating { background: #448aff; box-shadow: 0 0 10px #448aff66; animation: pulse 0.5s infinite; }
+  .status-dot.idle { background: #555; }
   @keyframes pulse {
     0% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.3); opacity: 0.7; }
     100% { transform: scale(1); opacity: 1; }
   }
-  .status-text {
-    color: rgba(255,255,255,0.7);
-    font-size: 14px;
+  .status-text { color: rgba(255,255,255,0.6); font-size: 13px; }
+  .lang-select {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; outline: none;
   }
+  .lang-select option { background: #1a1a2e; color: #fff; }
+
   .btn-record {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: none;
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    color: #fff;
-    font-size: 28px;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    box-shadow: 0 8px 30px rgba(255,65,108,0.4);
+    width: 60px; height: 60px; border-radius: 50%; border: none;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b); color: #fff; font-size: 26px;
+    cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; box-shadow: 0 6px 25px rgba(255,65,108,0.4);
   }
-  .btn-record:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(255,65,108,0.6);
+  .btn-record:active { transform: scale(0.9); }
+  .btn-record.recording { background: linear-gradient(135deg, #e53935, #c62828); animation: rec-pulse 1.2s infinite; }
+  @keyframes rec-pulse {
+    0% { box-shadow: 0 6px 25px rgba(255,65,108,0.4); }
+    50% { box-shadow: 0 6px 40px rgba(255,65,108,0.8); }
+    100% { box-shadow: 0 6px 25px rgba(255,65,108,0.4); }
   }
-  .btn-record:active {
-    transform: scale(0.95);
+
+  .interim-text {
+    color: rgba(255,255,255,0.25); font-size: 13px; font-style: italic;
+    text-align: center; padding: 8px; min-height: 20px;
   }
-  .btn-record.recording {
-    background: linear-gradient(135deg, #e53935, #c62828);
-    animation: record-pulse 1.2s infinite;
+  .error-msg {
+    background: rgba(255,50,50,0.15); border: 1px solid rgba(255,50,50,0.3);
+    color: #ff6b6b; padding: 8px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 10px; display: none;
   }
-  @keyframes record-pulse {
-    0% { box-shadow: 0 8px 30px rgba(255,65,108,0.4); }
-    50% { box-shadow: 0 8px 50px rgba(255,65,108,0.8); }
-    100% { box-shadow: 0 8px 30px rgba(255,65,108,0.4); }
+
+  /* 文字输入模式 */
+  .input-area {
+    display: flex; gap: 10px; margin-bottom: 12px;
   }
+  .text-input {
+    flex: 1; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.3); color: #fff; font-size: 16px; outline: none; resize: none;
+    min-height: 48px; max-height: 120px; font-family: inherit;
+  }
+  .text-input::placeholder { color: rgba(255,255,255,0.25); }
+  .text-input:focus { border-color: rgba(68,138,255,0.5); }
+  .btn-translate {
+    padding: 12px 20px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, #448aff, #2979ff); color: #fff;
+    font-size: 14px; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+  }
+  .btn-translate:active { transform: scale(0.95); }
+
+  /* 翻译结果显示区 */
   .transcript-area {
-    background: rgba(0,0,0,0.3);
-    border-radius: 16px;
-    padding: 20px;
-    min-height: 200px;
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 16px;
+    background: rgba(0,0,0,0.3); border-radius: 14px; padding: 16px;
+    min-height: 180px; max-height: 360px; overflow-y: auto; margin-bottom: 12px;
   }
   .transcript-area::-webkit-scrollbar { width: 4px; }
   .transcript-area::-webkit-scrollbar-track { background: transparent; }
-  .transcript-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
-  .message {
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .message:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-  .msg-original {
-    color: rgba(255,255,255,0.85);
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 4px;
-    font-weight: 400;
-  }
-  .msg-translated {
-    color: #80d8ff;
-    font-size: 18px;
-    line-height: 1.6;
-    font-weight: 500;
-  }
-  .msg-time {
-    color: rgba(255,255,255,0.25);
-    font-size: 11px;
-    margin-top: 4px;
-  }
-  .msg-tag {
-    display: inline-block;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.4);
-    margin-right: 6px;
-  }
-  .placeholder-text {
-    color: rgba(255,255,255,0.2);
-    text-align: center;
-    padding: 40px 20px;
-    font-size: 15px;
-    line-height: 1.8;
-  }
-  .controls-row {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  .transcript-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  .message { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .message:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .msg-original { color: rgba(255,255,255,0.8); font-size: 15px; line-height: 1.6; margin-bottom: 3px; }
+  .msg-translated { color: #80d8ff; font-size: 17px; line-height: 1.6; font-weight: 500; }
+  .msg-time { color: rgba(255,255,255,0.2); font-size: 11px; margin-top: 3px; }
+  .msg-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 8px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); margin-right: 4px; }
+
+  .placeholder-text { color: rgba(255,255,255,0.15); text-align: center; padding: 30px 16px; font-size: 14px; line-height: 1.8; }
+
+  .controls-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .btn-clear {
-    padding: 10px 24px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.05);
-    color: rgba(255,255,255,0.6);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 8px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5); font-size: 13px; cursor: pointer; transition: all 0.2s;
   }
-  .btn-clear:hover {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
+  .btn-clear:active { background: rgba(255,255,255,0.1); color: #fff; }
+
+  .support-note {
+    text-align: center; color: rgba(255,255,255,0.2); font-size: 11px; margin-top: 14px;
   }
-  .lang-select {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    cursor: pointer;
-    outline: none;
-  }
-  .lang-select option {
-    background: #1a1a2e;
-    color: #fff;
-  }
-  .interim-text {
-    color: rgba(255,255,255,0.3);
-    font-size: 15px;
-    font-style: italic;
-    text-align: center;
-    padding: 12px;
-    min-height: 24px;
-  }
-  .error-msg {
-    background: rgba(255,50,50,0.15);
-    border: 1px solid rgba(255,50,50,0.3);
-    color: #ff6b6b;
-    padding: 10px 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    margin-bottom: 12px;
-    display: none;
-  }
+
   @media (max-width: 480px) {
+    body { padding: 12px; padding-top: 24px; }
     .container { padding: 20px 16px; }
-    h1 { font-size: 20px; }
-    .msg-translated { font-size: 16px; }
-    .msg-original { font-size: 14px; }
+    h1 { font-size: 19px; }
+    .text-input { font-size: 15px; }
+    .msg-translated { font-size: 15px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🔥⚡ 火雷实时翻译</h1>
-  <p class="subtitle">语音识别 · 自动翻译 · 中英对照</p>
+  <h1>🔥⚡ 火雷翻译</h1>
+  <p class="subtitle">语音识别 · 文字输入 · 自动翻译</p>
 
-  <div class="status-bar">
-    <div class="status-left">
-      <div class="status-dot" id="statusDot"></div>
-      <span class="status-text" id="statusText">待机中</span>
-    </div>
-    <select class="lang-select" id="inputLang">
-      <option value="en-US">英语 (English)</option>
-      <option value="ja-JP">日语 (日本語)</option>
-      <option value="ko-KR">韩语 (한국어)</option>
-      <option value="fr-FR">法语 (Français)</option>
-      <option value="de-DE">德语 (Deutsch)</option>
-      <option value="es-ES">西班牙语 (Español)</option>
-    </select>
+  <!-- 模式切换 -->
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="text" id="tabText">⌨️ 文字输入</button>
+    <button class="mode-tab" data-mode="voice" id="tabVoice">🎤 语音识别</button>
   </div>
 
-  <div class="error-msg" id="errorMsg"></div>
+  <!-- 语音模式 -->
+  <div class="voice-section" id="voiceSection">
+    <div class="status-bar">
+      <div class="status-left">
+        <div class="status-dot idle" id="statusDot"></div>
+        <span class="status-text" id="statusText">待机中</span>
+      </div>
+      <select class="lang-select" id="inputLang">
+        <option value="en-US">英语</option>
+        <option value="ja-JP">日语</option>
+        <option value="ko-KR">韩语</option>
+        <option value="fr-FR">法语</option>
+        <option value="de-DE">德语</option>
+        <option value="es-ES">西语</option>
+      </select>
+    </div>
 
-  <button class="btn-record" id="btnRecord" title="点击开始录音">
-    🎤
-  </button>
+    <div class="error-msg" id="errorMsg"></div>
 
-  <div class="interim-text" id="interimText">等待开始录音...</div>
+    <button class="btn-record" id="btnRecord">🎤</button>
+    <div class="interim-text" id="interimText">🎤 点击按钮开始录音</div>
+  </div>
 
+  <!-- 文字输入模式 -->
+  <div class="text-section active" id="textSection">
+    <div class="input-area">
+      <textarea class="text-input" id="textInput" placeholder="输入英文，自动翻译成中文..." rows="2"></textarea>
+      <button class="btn-translate" id="btnTranslate">翻译</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+      <button class="btn-clear" style="font-size:12px;padding:6px 14px;" id="btnPaste">📋 粘贴</button>
+      <button class="btn-clear" style="font-size:12px;padding:6px 14px;" id="btnClearInput">清空</button>
+    </div>
+  </div>
+
+  <!-- 翻译结果 -->
   <div class="transcript-area" id="transcriptArea">
     <div class="placeholder-text">
-      🎤 点击麦克风按钮开始<br>
-      对方说英语，界面实时显示中文<br>
-      录音 → 识别 → 翻译
+      🔥⚡ 选择输入方式开始翻译<br>
+      对方说话或输入英文，实时显示中文
     </div>
   </div>
 
   <div class="controls-row">
     <button class="btn-clear" id="btnClear">🗑️ 清空记录</button>
   </div>
+
+  <div class="support-note">翻译结果仅供参考 | 由 Google Translate 提供支持</div>
 </div>
 
 <script>
-// ============================================================
-// 配置
-// ============================================================
-// 翻译API选择：'google' (免费, 浏览器端) 或 'mymemory' (免费, 有请求限制)
-// google: 完全免费，无需API Key，但需要能访问 translate.googleapis.com
-// mymemory: 免费但有每日限额，不需要科学上网
-const TRANSLATE_API = 'google';
-
+// ===== 状态 =====
+let transcriptHistory = [];
 let recognition = null;
 let isRecording = false;
-let finalTranscript = '';
-let transcriptHistory = [];
-let lastTranslationTime = 0;
-const MIN_TRANSLATION_INTERVAL = 300; // ms，节流
+let currentMode = 'text'; // 'text' or 'voice'
 
-// DOM refs
+const TRANSLATE_API = 'google';
+
+// ===== DOM =====
+const tabText = document.getElementById('tabText');
+const tabVoice = document.getElementById('tabVoice');
+const voiceSection = document.getElementById('voiceSection');
+const textSection = document.getElementById('textSection');
 const btnRecord = document.getElementById('btnRecord');
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
@@ -298,103 +248,121 @@ const interimText = document.getElementById('interimText');
 const transcriptArea = document.getElementById('transcriptArea');
 const errorMsg = document.getElementById('errorMsg');
 const inputLang = document.getElementById('inputLang');
+const textInput = document.getElementById('textInput');
+const btnTranslate = document.getElementById('btnTranslate');
 const btnClear = document.getElementById('btnClear');
+const btnClearInput = document.getElementById('btnClearInput');
+const btnPaste = document.getElementById('btnPaste');
 
-// ============================================================
-// 语音识别
-// ============================================================
-function initSpeechRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    showError('您的浏览器不支持语音识别。请使用最新版 Chrome 或 Edge。');
-    return false;
+// ===== 模式切换 =====
+tabText.addEventListener('click', () => {
+  if (isRecording) stopRecording();
+  currentMode = 'text';
+  tabText.classList.add('active');
+  tabVoice.classList.remove('active');
+  voiceSection.classList.remove('active');
+  textSection.classList.add('active');
+});
+
+tabVoice.addEventListener('click', () => {
+  currentMode = 'voice';
+  tabVoice.classList.add('active');
+  tabText.classList.remove('active');
+  textSection.classList.remove('active');
+  voiceSection.classList.add('active');
+  // 检测是否支持语音
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showError('您的浏览器不支持语音识别，请使用 Chrome 浏览器或切换到文字输入模式');
   }
-  recognition = new SpeechRecognition();
+});
+
+// ===== 翻译函数 =====
+async function translateAndShow(text) {
+  if (!text || text.trim().length < 1) return;
+  const trimmed = text.trim();
+  
+  // 去重
+  if (transcriptHistory.length > 0) {
+    const last = transcriptHistory[transcriptHistory.length - 1];
+    if (last.original === trimmed) return;
+  }
+
+  setStatus('translating', '翻译中...');
+
+  let translated = '';
+  try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-CN&dt=t&q=${encodeURIComponent(trimmed)}`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (data && data[0]) {
+      translated = data[0].map(item => item[0]).join('');
+    } else {
+      translated = trimmed;
+    }
+  } catch(e) {
+    translated = trimmed + ' (翻译失败)';
+  }
+
+  if (translated) {
+    transcriptHistory.push({
+      original: trimmed,
+      translated: translated,
+      time: new Date().toLocaleTimeString('zh-CN', { hour12: false })
+    });
+    renderTranscript();
+    setStatus('listening', '录音中...');
+  }
+}
+
+// ===== 语音识别 =====
+function initSpeech() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showError('不支持语音识别'); return false; }
+  recognition = new SR();
   recognition.continuous = true;
   recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
   recognition.lang = inputLang.value;
 
   recognition.onstart = () => {
     isRecording = true;
     btnRecord.classList.add('recording');
     btnRecord.textContent = '⏹';
-    setStatus('listening', '🎤 录音中...');
+    setStatus('listening', '录音中...');
     interimText.textContent = '正在聆听...';
     hideError();
   };
 
   recognition.onresult = (event) => {
-    let interim = '';
     let final = '';
-
+    let interim = '';
     for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcript = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        final += transcript + ' ';
-      } else {
-        interim += transcript;
-      }
+      const t = event.results[i][0].transcript;
+      if (event.results[i].isFinal) final += t + ' ';
+      else interim += t;
     }
-
-    if (final) {
-      finalTranscript += final;
-      const now = Date.now();
-      if (now - lastTranslationTime > MIN_TRANSLATION_INTERVAL) {
-        translateText(final.trim());
-        lastTranslationTime = now;
-      }
-    }
-
-    if (interim) {
-      interimText.textContent = interim;
-      setStatus('translating', '🎤 识别中...');
-    } else {
-      interimText.textContent = '等待语音输入...';
-    }
+    if (final) translateAndShow(final);
+    interimText.textContent = interim || '等待语音输入...';
   };
 
-  recognition.onerror = (event) => {
-    console.error('Speech error:', event.error);
-    if (event.error === 'no-speech') {
-      interimText.textContent = '未检测到语音，继续聆听...';
-      return;
-    }
-    if (event.error === 'aborted') return;
-    showError(`语音识别错误: ${event.error}`);
+  recognition.onerror = (e) => {
+    if (e.error === 'no-speech') { interimText.textContent = '未检测到语音...'; return; }
+    if (e.error === 'aborted') return;
+    showError(`语音识别错误: ${e.error}，可切换到文字输入模式`);
     stopRecording();
   };
 
   recognition.onend = () => {
-    // 如果是手动停止，不自动重启
     if (isRecording) {
-      // 自动重启
-      try {
-        recognition.start();
-      } catch(e) {
-        console.log('Recognition restart failed, will retry...');
-        setTimeout(() => {
-          if (isRecording) {
-            try { recognition.start(); } catch(e) {}
-          }
-        }, 500);
-      }
+      setTimeout(() => { try { recognition.start(); } catch(e) {} }, 300);
     }
   };
-
   return true;
 }
 
 function startRecording() {
-  if (!recognition) {
-    if (!initSpeechRecognition()) return;
-  }
+  if (!recognition && !initSpeech()) return;
   recognition.lang = inputLang.value;
-  try {
-    recognition.start();
-  } catch(e) {
-    // already started
-  }
+  try { recognition.start(); } catch(e) {}
 }
 
 function stopRecording() {
@@ -402,172 +370,99 @@ function stopRecording() {
   btnRecord.classList.remove('recording');
   btnRecord.textContent = '🎤';
   setStatus('idle', '已停止');
-  interimText.textContent = '已暂停，点击麦克风继续录音';
-  if (recognition) {
-    try { recognition.stop(); } catch(e) {}
-  }
+  interimText.textContent = '⏸ 已暂停';
+  if (recognition) try { recognition.stop(); } catch(e) {}
 }
 
-// ============================================================
-// 翻译
-// ============================================================
-async function translateText(text) {
-  if (!text || text.trim().length < 1) return;
+btnRecord.addEventListener('click', () => {
+  isRecording ? stopRecording() : startRecording();
+});
 
-  const trimmed = text.trim();
+inputLang.addEventListener('change', () => {
+  if (recognition) recognition.lang = inputLang.value;
+});
 
-  // 避免重复翻译完全相同的短句
-  if (transcriptHistory.length > 0) {
-    const last = transcriptHistory[transcriptHistory.length - 1];
-    if (last.original === trimmed) return;
+// ===== 文字输入翻译 =====
+btnTranslate.addEventListener('click', () => {
+  const text = textInput.value.trim();
+  if (!text) { textInput.focus(); return; }
+  translateAndShow(text);
+  textInput.value = '';
+});
+
+textInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    btnTranslate.click();
   }
+});
 
-  setStatus('translating', '🔄 翻译中...');
+btnClearInput.addEventListener('click', () => {
+  textInput.value = '';
+  textInput.focus();
+});
 
-  let translated = '';
-
-  if (TRANSLATE_API === 'google') {
-    translated = await translateGoogle(trimmed);
-  } else {
-    translated = await translateMyMemory(trimmed);
-  }
-
-  if (translated) {
-    const entry = {
-      original: trimmed,
-      translated: translated,
-      time: new Date().toLocaleTimeString('zh-CN', { hour12: false })
-    };
-    transcriptHistory.push(entry);
-    renderTranscript();
-    setStatus('listening', '🎤 录音中...');
-  }
-}
-
-// Google Translate (免费，浏览器端)
-async function translateGoogle(text) {
+btnPaste.addEventListener('click', async () => {
   try {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-CN&dt=t&q=${encodeURIComponent(text)}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    if (data && data[0]) {
-      return data[0].map(item => item[0]).join('');
+    const text = await navigator.clipboard.readText();
+    if (text) {
+      textInput.value = text;
+      translateAndShow(text);
+      textInput.value = '';
     }
-    return text;
-  } catch (e) {
-    console.error('Google Translate error:', e);
-    // fallback to mymemory
-    return await translateMyMemory(text);
-  }
-}
-
-// MyMemory (免费备用)
-async function translateMyMemory(text) {
-  try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh-CN`;
-    const response = await fetch(url);
-    const data = await response.json();
-    if (data.responseData && data.responseData.translatedText) {
-      return data.responseData.translatedText;
-    }
-    return text;
   } catch(e) {
-    console.error('MyMemory error:', e);
-    return text + ' (翻译失败)';
+    showError('粘贴失败，请手动输入');
   }
-}
+});
 
-// ============================================================
-// UI
-// ============================================================
+// ===== UI =====
 function renderTranscript() {
   if (transcriptHistory.length === 0) {
-    transcriptArea.innerHTML = `<div class="placeholder-text">
-      🎤 点击麦克风按钮开始<br>
-      对方说英语，界面实时显示中文<br>
-      录音 → 识别 → 翻译
-    </div>`;
+    transcriptArea.innerHTML = `<div class="placeholder-text">🔥⚡ 选择输入方式开始翻译</div>`;
     return;
   }
-
-  let html = '';
-  // 显示最近20条
-  const items = transcriptHistory.slice(-20);
-  for (const item of items) {
-    html += `
-      <div class="message">
-        <div class="msg-original">${escapeHtml(item.original)}</div>
-        <div class="msg-translated">${escapeHtml(item.translated)}</div>
-        <div class="msg-time"><span class="msg-tag">原文</span>${item.time}</div>
-      </div>
-    `;
-  }
-  transcriptArea.innerHTML = html;
+  const items = transcriptHistory.slice(-30);
+  transcriptArea.innerHTML = items.map(item => `
+    <div class="message">
+      <div class="msg-original">${esc(item.original)}</div>
+      <div class="msg-translated">${esc(item.translated)}</div>
+      <div class="msg-time"><span class="msg-tag">原文</span>${item.time}</div>
+    </div>
+  `).join('');
   transcriptArea.scrollTop = transcriptArea.scrollHeight;
 }
 
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
 }
 
 function setStatus(state, text) {
   statusDot.className = 'status-dot';
   if (state === 'listening') statusDot.classList.add('listening');
   else if (state === 'translating') statusDot.classList.add('translating');
-  else if (state === 'active') statusDot.classList.add('active');
+  else statusDot.classList.add('idle');
   statusText.textContent = text;
 }
 
 function showError(msg) {
   errorMsg.textContent = msg;
   errorMsg.style.display = 'block';
+  setTimeout(() => { errorMsg.style.display = 'none'; }, 5000);
 }
 
-function hideError() {
-  errorMsg.style.display = 'none';
-}
+function hideError() { errorMsg.style.display = 'none'; }
 
-function clearHistory() {
+btnClear.addEventListener('click', () => {
   transcriptHistory = [];
-  finalTranscript = '';
   renderTranscript();
-  interimText.textContent = '已清空，等待语音输入...';
-}
-
-// ============================================================
-// 事件绑定
-// ============================================================
-btnRecord.addEventListener('click', () => {
-  if (isRecording) {
-    stopRecording();
-  } else {
-    startRecording();
-  }
 });
 
-btnClear.addEventListener('click', clearHistory);
-
-inputLang.addEventListener('change', () => {
-  if (isRecording) {
-    stopRecording();
-    // 用户手动重启
-    setTimeout(() => startRecording(), 300);
-  }
-  if (recognition) {
-    recognition.lang = inputLang.value;
-  }
-});
-
-// 初始化
+// ===== 检查语音支持 =====
 if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-  showError('⚠️ 您的浏览器不支持语音识别。请使用最新版 Chrome (推荐) 或 Edge。');
-}
-
-// 阻止页面在录音时休眠
-if (navigator.mediaSession) {
-  navigator.mediaSession.setActionHandler('play', () => {});
+  // 默认显示文字模式
+  tabText.click();
 }
 </script>
 </body>
